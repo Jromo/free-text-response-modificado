@@ -292,6 +292,7 @@ class FreeTextResponse(
         context.update(
             {
                 'display_name': self.display_name,
+                'location': unicode(self.location).split('@')[-1],
                 'indicator_class': self._get_indicator_class(),
                 'nodisplay_class': self._get_nodisplay_class(),
                 'problem_progress': self._get_problem_progress(),

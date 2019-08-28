@@ -34,7 +34,7 @@ function FreeTextResponseView(runtime, element) {
     charNum.text($.trim(textareaStudentAnswer.val()).length);
 
     // POLYFILL notify if it does not exist. Like in the xblock workbench.
-    runtime.notify = runtime.notify || function () {
+    runtime.notify = runtime.notify || function() {
         console.log('POLYFILL runtime.notify', arguments);
     };
 
@@ -42,17 +42,18 @@ function FreeTextResponseView(runtime, element) {
         textareaParent.removeClass('correct');
         textareaParent.removeClass('incorrect');
         textareaParent.removeClass('unanswered');
-        textareaParent.addClass(new_class); 
+        textareaParent.addClass(new_class);
     }
 
-    buttonHide.on('click', function () {
+    buttonHide.on('click', function() {
         responseList.toggle();
         buttonHideTextHide.toggle();
         buttonHideTextShow.toggle();
     });
 
-    buttonSubmit.on('click', function () {
-        buttonSubmit.text(buttonSubmit[0].dataset.checking);
+    buttonSubmit.on('click', function() {
+        buttonSubmit.html("<span>" + buttonSubmit[0].dataset.checking + "</span>");
+        buttonSubmit.attr("disabled", true);
         runtime.notify('submit', {
             message: 'Submitting...',
             state: 'start'
@@ -68,7 +69,6 @@ function FreeTextResponseView(runtime, element) {
                 buttonSubmit.addClass(response.nodisplay_class);
                 problemProgress.text(response.problem_progress);
                 submissionReceivedMessage.text(response.submitted_message);
-                buttonSubmit.text(buttonSubmit[0].dataset.value);
                 userAlertMessage.text(response.user_alert);
                 buttonSave.addClass(response.nodisplay_class);
                 setClassForTextAreaParent(response.indicator_class);
@@ -84,6 +84,10 @@ function FreeTextResponseView(runtime, element) {
             },
             error: function buttonSubmitOnError() {
                 runtime.notify('error', {});
+            },
+            complete: function() {
+                buttonSubmit.html("<span>" + buttonSubmit[0].dataset.value + "</span>");
+                buttonSubmit.attr("disabled", false);
             }
         });
         return false;
@@ -112,7 +116,7 @@ function FreeTextResponseView(runtime, element) {
         $element.find('.responses-box').removeClass('hidden');
     }
 
-    buttonSave.on('click', function () {
+    buttonSave.on('click', function() {
         buttonSave.text(buttonSave[0].dataset.checking);
         runtime.notify('save', {
             message: 'Saving...',
