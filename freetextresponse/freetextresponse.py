@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-  
+import pkg_resources
 """
 This is the core logic for the Free-text Response XBlock
 """
@@ -256,13 +257,18 @@ class FreeTextResponse(
         """
         fragment = Fragment(rendered_template)
         for item in additional_css:
-            url = self.runtime.local_resource_url(self, item)
-            fragment.add_css_url(url)
+            url = self.resource_string(item)
+            fragment.add_css(url)
         for item in additional_js:
-            url = self.runtime.local_resource_url(self, item)
-            fragment.add_javascript_url(url)
+            url = self.resource_string(item)
+            fragment.add_javascript(url)
         fragment.initialize_js(initialize_js_func)
         return fragment
+
+    def resource_string(self, path):
+        """Handy helper for getting resources from our kit."""
+        data = pkg_resources.resource_string(__name__, path)
+        return data.decode("utf8")
 
     # Decorate the view in order to support multiple devices e.g. mobile
     # See: https://openedx.atlassian.net/wiki/display/MA/Course+Blocks+API
