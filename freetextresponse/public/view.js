@@ -74,6 +74,11 @@ function FreeTextResponseView(runtime, element) {
                 setClassForTextAreaParent(response.indicator_class);
                 displayResponsesIfAnswered(response);
 
+                //si oculto boton desactivo textarea
+                if(response.nodisplay_class != ''){
+                    textareaStudentAnswer.prop('disabled', true);
+                }
+
                 $xblocksContainer.data(cachedAnswerId, $element.find('.student_answer').val());
                 $xblocksContainer.data(problemProgressId, response.problem_progress);
                 $xblocksContainer.data(usedAttemptsFeedbackId, response.used_attempts_feedback);

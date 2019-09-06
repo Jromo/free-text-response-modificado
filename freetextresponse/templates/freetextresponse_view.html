@@ -6,7 +6,11 @@
     <div class="word-count-message">{{ word_count_message }}</div>
     <div class="capa_inputtype textline">
         <div class="user_input status {{ indicator_class }}" id="status_{{ location }}">
-            <textarea class="student_answer" rows="20">{{ student_answer }}</textarea>
+            {% if nodisplay_class != '' %}
+                <textarea class="student_answer" rows="20" disabled>{{ student_answer }}</textarea>
+            {% else %}
+                <textarea class="student_answer" rows="20">{{ student_answer }}</textarea>
+            {% endif %}
             <span class="status {{ visibility_class }}" aria-describedby="student_answer"></span>
         </div>
     </div>
