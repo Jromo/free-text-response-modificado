@@ -183,3 +183,7 @@
 .freetextresponse textarea.student_answer:disabled {
   background: #f9f9f9;
 }
+
+.freetextresponse .charNum {
+  display: none;
+}
