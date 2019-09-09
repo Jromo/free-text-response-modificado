@@ -545,8 +545,8 @@ class FreeTextResponse(
         result = ''
         if self.max_attempts > 0:
             result = ungettext(
-                'You have used {count_attempts} of {max_attempts} submission',
-                'You have used {count_attempts} of {max_attempts} submissions',
+                'Has realizado {count_attempts} de {max_attempts} intento',
+                'Has realizado {count_attempts} de {max_attempts} intentos',
                 self.max_attempts,
             ).format(
                 count_attempts=self.count_attempts,
