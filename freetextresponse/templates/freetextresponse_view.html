@@ -1,4 +1,17 @@
 {% load i18n %}
+<style>
+    .freetextresponse .user_input.unanswered .status {
+    background: url("{{ image_path }}unanswered-icon.png") center center no-repeat;
+    }
+
+    .freetextresponse .user_input.correct .status {
+    background: url("{{ image_path }}correct-icon.png") center center no-repeat;
+    }
+
+    .freetextresponse .user_input.incorrect .status {
+    background: url("{{ image_path }}incorrect-icon.png") center center no-repeat;
+    }
+</style>
 <div class="freetextresponse xmodule_display xmodule_CapaModule problem">
     <h2 class="problem-header">{{ display_name }}</h2>
     <div class="problem-progress">{{ problem_progress }}</div>

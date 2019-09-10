@@ -301,6 +301,7 @@ class FreeTextResponse(
                 'word_count_message': self._get_word_count_message(),
                 'display_other_responses': display_other_responses,
                 'other_responses': self.get_other_answers(),
+                'image_path' : self.runtime.local_resource_url(self, "public/images/")
             }
         )
         template = self.loader.render_django_template(
