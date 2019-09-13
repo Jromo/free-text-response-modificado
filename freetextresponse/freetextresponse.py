@@ -89,11 +89,9 @@ class FreeTextResponse(
         return scenarios
 
     display_correctness = Boolean(
-        display_name=_('Display Correctness?'),
+        display_name=_('Mostrar ticket?'),
         help=_(
-            'This is a flag that indicates if the indicator '
-            'icon should be displayed after a student enters '
-            'their response'
+            'Si se muestra o no el ticket verde al responder el nro correcto de caracteres'
         ),
         default=True,
         scope=Scope.settings,
@@ -141,10 +139,9 @@ class FreeTextResponse(
         scope=Scope.settings,
     )
     max_attempts = Integer(
-        display_name=_('Maximum Number of Attempts'),
+        display_name=_('Nro de Intentos'),
         help=_(
-            'This is the maximum number of times a '
-            'student is allowed to attempt the problem'
+            'Nro de veces que el estudiante puede intentar responder'
         ),
         default=2,
         values={'min': 1},
@@ -153,8 +150,7 @@ class FreeTextResponse(
     max_word_count = Integer(
         display_name=_(unicode("Nro. máximo de carácteres.", 'utf8')),
         help=_(
-            'This is the maximum number of characters allowed for this '
-            'question'
+            'Max nro de caracteres que puede tener la respuesta'
         ),
         default=100000,
         values={'min': 1},
@@ -163,8 +159,7 @@ class FreeTextResponse(
     min_word_count = Integer(
         display_name=_(unicode("Nro. mínimo de carácteres.", 'utf8')),
         help=_(
-            'This is the minimum number of characters required '
-            'for this question'
+            'Min nro de caracteres que puede tener la respuesta'
         ),
         default=10,
         values={'min': 10},
@@ -181,22 +176,20 @@ class FreeTextResponse(
         multiline_editor=True,
     )
     submitted_message = String(
-        display_name=_('Submission Received Message'),
+        display_name=_('Mensaje Respuesta bien recibida'),
         help=_(
-            'This is the message students will see upon '
-            'submitting their response'
+            'Este es el mensaje que se ve luego de responder con el nro correcto de caracteres'
         ),
         default=unicode("¡Tu respuesta ha sido recibida con éxito!", 'utf8'),
         scope=Scope.settings,
     )
     weight = Integer(
-        display_name=_('Weight'),
+        display_name=_('Peso'),
         help=_(
-            'This assigns an integer value representing '
-            'the weight of this problem'
+            'Peso del problema en una evaluacion'
         ),
         default=0,
-        values={'min': 1},
+        values={'min': 0},
         scope=Scope.settings,
     )
     saved_message = String(
@@ -226,18 +219,18 @@ class FreeTextResponse(
 
     #saque todo lo que no se va a usar para que no de problemas
     editable_fields = (
-        'display_name',
-        'prompt',
-        'weight',
-        'max_attempts',
-        'display_correctness',
+        #'display_name',
+        #'prompt',
         'min_word_count',
         'max_word_count',
         #'fullcredit_keyphrases',
         #'halfcredit_keyphrases',
         'submitted_message',
         #'display_other_student_responses',
-        'saved_message',
+        #'saved_message',
+        'weight',
+        'max_attempts',
+        'display_correctness'
     )
 
     def build_fragment(
