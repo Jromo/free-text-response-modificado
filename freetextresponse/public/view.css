@@ -177,10 +177,31 @@
   display: none;
 }
 
+.freetextresponse textarea {
+  resize: none;
+}
+
 .freetextresponse textarea.student_answer:disabled {
   background: #f9f9f9;
 }
 
 .freetextresponse .charNum {
   display: none;
+}
+
+.freetextresponse .capa_inputtype.textline{
+  text-align: center;
+}
+
+/* CSS Media Theme */
+
+.freetextresponse.Media textarea {
+  border-radius:20px!important;
+  padding:15px;
+  outline:none;
+}
+
+.freetextresponse.Media .unanswered textarea:focus{
+  border-color:rgb(240, 119, 70)!important;
+  box-shadow: 0 0 6px 0 rgba(0,117,180,0.4), inset 0 0 4px 0 rgba(0,0,0,0.15);
 }

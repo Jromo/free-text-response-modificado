@@ -12,15 +12,14 @@
     background: url("{{ image_path }}incorrect-icon.png") center center no-repeat;
     }
 </style>
-<div class="freetextresponse xmodule_display xmodule_CapaModule problem">
+<div class="freetextresponse {{theme}} xmodule_display xmodule_CapaModule problem">
     <div class="problem-progress">{{ problem_progress }}</div>
-    <div class="word-count-message">{{ word_count_message }}</div>
     <div class="capa_inputtype textline">
         <div class="user_input status {{ indicator_class }}" id="status_{{ location }}">
             {% if nodisplay_class != '' %}
-                <textarea class="student_answer" rows="20" disabled>{{ student_answer }}</textarea>
+                <textarea class="student_answer" placeholder="{{ word_count_message }}" rows="20" disabled>{{ student_answer }}</textarea>
             {% else %}
-                <textarea class="student_answer" rows="20">{{ student_answer }}</textarea>
+                <textarea class="student_answer" placeholder="{{ word_count_message }}" rows="20">{{ student_answer }}</textarea>
             {% endif %}
             <span class="status {{ visibility_class }}" aria-describedby="student_answer"></span>
         </div>
@@ -38,7 +37,8 @@
             </button>
         <button class="save {{ nodisplay_class }}" data-checking="{% trans " Enviando... " %}" data-value={% trans "Save" %}>
                 {% trans "Save" %}
-            </button> {% endif %}
+            </button> 
+        {% endif %}
         <div class="used-attempts-feedback" aria-live="polite">{{ used_attempts_feedback }}</div>
     </div>
     <div class="capa_alert user_alert">{{ user_alert }}</div>

@@ -202,6 +202,14 @@ class FreeTextResponse(
         scope=Scope.settings,
     )
 
+    theme = String(
+        display_name = _("Estilo"),
+        help = _("Cambiar estilo"),
+        default = "SumaySigue",
+        values = ["SumaySigue", "Media"],
+        scope = Scope.settings
+    )
+
     count_attempts = Integer(
         default=0,
         scope=Scope.user_state,
@@ -230,7 +238,8 @@ class FreeTextResponse(
         #'saved_message',
         'weight',
         'max_attempts',
-        'display_correctness'
+        'display_correctness',
+        'theme'
     )
 
     def build_fragment(
@@ -287,8 +296,9 @@ class FreeTextResponse(
                 'problem_progress': self._get_problem_progress(),
                 'prompt': self.prompt,
                 'student_answer': self.student_answer,
+                'theme': self.theme,
                 #no se por que self.is_past_due() da siempre true al testear
-                'is_past_due': False,
+                'is_past_due': self.get_is_past_due(),
                 'used_attempts_feedback': self._get_used_attempts_feedback(),
                 'visibility_class': self._get_indicator_visibility_class(),
                 'word_count_message': self._get_word_count_message(),
@@ -302,6 +312,7 @@ class FreeTextResponse(
             context=Context(context),
             i18n_service=self.runtime.service(self, 'i18n'),
         )
+
         fragment = self.build_fragment(
             template,
             initialize_js_func='FreeTextResponseView',
@@ -586,6 +597,12 @@ class FreeTextResponse(
             return True
         return False
 
+    def get_is_past_due(self):
+        if hasattr(self, 'show_correctness'):
+            return self.is_past_due()
+        else:
+            return False
+
     @XBlock.json_handler
     def submit(self, data, suffix=''):
         # pylint: disable=unused-argument
@@ -594,8 +611,12 @@ class FreeTextResponse(
         """
         # Fails if the UI submit/save buttons were shut
         # down on the previous sumbisson
+        sub_msg_error = False
         if self._can_submit():
-            self.student_answer = data['student_answer']
+            if (self.count_attempts + 1) <= self.max_attempts or self.max_attempts <= 0:
+                self.student_answer = data['student_answer']
+            else:
+                sub_msg_error = True
             # Counting the attempts and publishing a score
             # Pero no los cuento si puse menos caracteres
             self._compute_score()
@@ -604,13 +625,20 @@ class FreeTextResponse(
             display_other_responses = self.display_other_student_responses
             if display_other_responses and data.get('can_record_response'):
                 self.store_student_response()
+        else:
+            sub_msg_error = True
+        
+        sub_msg = self._get_submitted_message()
+        if sub_msg_error:
+            sub_msg = "Error: El estado de la pregunta fue modificado, por favor recargue el sitio"
+            
         result = {
             'status': 'success',
             'problem_progress': self._get_problem_progress(),
             'indicator_class': self._get_indicator_class(),
             'used_attempts_feedback': self._get_used_attempts_feedback(),
             'nodisplay_class': self._get_nodisplay_class(),
-            'submitted_message': self._get_submitted_message(),
+            'submitted_message': sub_msg,
             'user_alert': self._get_user_alert(
                 ignore_attempts=True,
             ),
