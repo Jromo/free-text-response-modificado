@@ -225,6 +225,8 @@ class FreeTextResponse(
 
     has_score = True
 
+    icon_class = "problem"
+
     #saque todo lo que no se va a usar para que no de problemas
     editable_fields = (
         #'display_name',
