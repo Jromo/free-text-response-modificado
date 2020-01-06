@@ -205,3 +205,8 @@
   border-color:rgb(240, 119, 70)!important;
   box-shadow: 0 0 6px 0 rgba(0,117,180,0.4), inset 0 0 4px 0 rgba(0,0,0,0.15);
 }
+
+/* esconder donde se mostraba el ticket porq ya no es necesario */
+.freetextresponse .user_input span.status {
+  display: none;
+}

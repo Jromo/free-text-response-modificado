@@ -143,7 +143,7 @@ class FreeTextResponse(
         help=_(
             'Nro de veces que el estudiante puede intentar responder'
         ),
-        default=2,
+        default=1,
         values={'min': 1},
         scope=Scope.settings,
     )
