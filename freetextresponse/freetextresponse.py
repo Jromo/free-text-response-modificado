@@ -148,7 +148,7 @@ class FreeTextResponse(
         scope=Scope.settings,
     )
     max_word_count = Integer(
-        display_name=_(unicode("Nro. máximo de carácteres.", 'utf8')),
+        display_name=_(unicode("Nro. máximo de caracteres.", 'utf8')),
         help=_(
             'Max nro de caracteres que puede tener la respuesta'
         ),
@@ -157,7 +157,7 @@ class FreeTextResponse(
         scope=Scope.settings,
     )
     min_word_count = Integer(
-        display_name=_(unicode("Nro. mínimo de carácteres.", 'utf8')),
+        display_name=_(unicode("Nro. mínimo de caracteres.", 'utf8')),
         help=_(
             'Min nro de caracteres que puede tener la respuesta'
         ),
@@ -188,7 +188,7 @@ class FreeTextResponse(
         help=_(
             'Peso del problema en una evaluacion'
         ),
-        default=0,
+        default=1,
         values={'min': 0},
         scope=Scope.settings,
     )
@@ -394,11 +394,11 @@ class FreeTextResponse(
         Returns the word count message
         """
         if len(self.student_answer.strip()) > self.max_word_count:
-            result = unicode("Debes escribir como máximo {max} carácteres.", 'utf8').format(max=self.max_word_count)
+            result = unicode("Debes escribir como máximo {max} caracteres.", 'utf8').format(max=self.max_word_count)
         
         else:
-            result = ungettext(unicode("Debes escribir al menos {min} carácteres.", 'utf8'),
-                unicode("Debes escribir al menos {min} carácteres.", 'utf8'),
+            result = ungettext(unicode("Debes escribir al menos {min} caracteres.", 'utf8'),
+                unicode("Debes escribir al menos {min} caracteres.", 'utf8'),
                 self.max_word_count,
             ).format(
                 min=self.min_word_count,
@@ -505,8 +505,8 @@ class FreeTextResponse(
                 self,
                 'grade',
                 {
-                    'value': self.score,
-                    'max_value': Credit.full.value
+                    'value': self.score*self.weight,
+                    'max_value': self.weight
                 }
             )
         except IntegrityError:
