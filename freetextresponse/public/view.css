@@ -86,7 +86,7 @@
 }
 
 .freetextresponse .problem-progress {
-  display: inline-block;
+  display: none!important;
   padding-left: 5px;
   color: #666;
   font-weight: 100;
@@ -191,6 +191,10 @@
 
 .freetextresponse .capa_inputtype.textline{
   text-align: center;
+}
+
+.freetextresponse .problem-progress {
+  display: none!important;
 }
 
 /* CSS Media Theme */
