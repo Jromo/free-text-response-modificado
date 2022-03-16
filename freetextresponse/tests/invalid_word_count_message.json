@@ -29,7 +29,7 @@
         "min_word_count": 1,
         "max_word_count": 10000, 
         "ignore_attempts": false, 
-        "result":  "Invalid Word Count. Your response must be between 1 and 10000 words." 
+        "result":  "Debes escribir al menos 1 caracteres." 
     },
     "single_max_word_count": {
         "word_count_valid": false,
@@ -37,7 +37,7 @@
         "min_word_count": 1,
         "max_word_count": 1, 
         "ignore_attempts": false, 
-        "result": "Invalid Word Count. Your response must be between 1 and 1 word." 
+        "result": "Debes escribir al menos 1 caracteres." 
     }
 }
 

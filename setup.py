@@ -36,7 +36,7 @@ setup(
     install_requires=[
         'coverage',
         'ddt',
-        'django<2.0',
+        'django',
         'django_nose',
         'edx-opaque-keys',
         'enum34',

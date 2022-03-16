@@ -47,5 +47,5 @@ class MissingDataFetcherMixin(object):
             # pylint:disable=E1101
         else:
             student_id = self.scope_ids.user_id or ''
-            student_id = unicode(student_id)
+            student_id = str(student_id)
         return student_id

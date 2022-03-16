@@ -36,7 +36,7 @@
             "half answer two"
         ], 
         "student_answer": "double answer one",
-        "credit": "zero"
+        "credit": "full"
     },
     "full_no_phrases": {
         "word_count_valid": true,

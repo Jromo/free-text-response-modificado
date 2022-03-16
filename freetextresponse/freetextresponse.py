@@ -8,7 +8,7 @@ from enum import Enum
 from django.db import IntegrityError
 from django.template.context import Context
 from django.utils.translation import ungettext
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext
 from xblock.core import XBlock
 from xblock.fields import Boolean
@@ -148,7 +148,7 @@ class FreeTextResponse(
         scope=Scope.settings,
     )
     max_word_count = Integer(
-        display_name=_(unicode("Nro. máximo de caracteres.", 'utf8')),
+        display_name=_("Nro. máximo de caracteres."),
         help=_(
             'Max nro de caracteres que puede tener la respuesta'
         ),
@@ -157,7 +157,7 @@ class FreeTextResponse(
         scope=Scope.settings,
     )
     min_word_count = Integer(
-        display_name=_(unicode("Nro. mínimo de caracteres.", 'utf8')),
+        display_name=_("Nro. mínimo de caracteres."),
         help=_(
             'Min nro de caracteres que puede tener la respuesta'
         ),
@@ -180,7 +180,7 @@ class FreeTextResponse(
         help=_(
             'Este es el mensaje que se ve luego de responder con el nro correcto de caracteres'
         ),
-        default=unicode("¡Tu respuesta ha sido recibida con éxito!", 'utf8'),
+        default=_("¡Tu respuesta ha sido recibida con éxito!"),
         scope=Scope.settings,
     )
     weight = Integer(
@@ -198,7 +198,7 @@ class FreeTextResponse(
             'This is the message students will see upon '
             'submitting a draft response'
         ),
-        default=unicode("Tu respuesta ha sido guardada, pero aún no se envía", 'utf8'),
+        default=_("Tu respuesta ha sido guardada, pero aún no se envía"),
         scope=Scope.settings,
     )
 
@@ -267,8 +267,8 @@ class FreeTextResponse(
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
-        data = pkg_resources.resource_string(__name__, path)
-        return data.decode("utf8")
+        data = pkg_resources.resource_string(__name__, path).decode()
+        return data
 
     # Decorate the view in order to support multiple devices e.g. mobile
     # See: https://openedx.atlassian.net/wiki/display/MA/Course+Blocks+API
@@ -292,7 +292,7 @@ class FreeTextResponse(
         context.update(
             {
                 'display_name': self.display_name,
-                'location': unicode(self.location).split('@')[-1],
+                'location': str(self.scope_ids.usage_id).split('@')[-1],
                 'indicator_class': self._get_indicator_class(),
                 'nodisplay_class': self._get_nodisplay_class(),
                 'problem_progress': self._get_problem_progress(),
@@ -345,7 +345,7 @@ class FreeTextResponse(
         """
         result = ValidationMessage(
             ValidationMessage.ERROR,
-            ugettext(unicode(msg))
+            ugettext(str(msg))
         )
         return result
 
@@ -394,12 +394,11 @@ class FreeTextResponse(
         Returns the word count message
         """
         if len(self.student_answer.strip()) > self.max_word_count:
-            result = unicode("Debes escribir como máximo {max} caracteres.", 'utf8').format(max=self.max_word_count)
-        
+            result = "Debes escribir como máximo {max} caracteres.".format(max=self.max_word_count)
         else:
-            result = ungettext(unicode("Debes escribir al menos {min} caracteres.", 'utf8'),
-                unicode("Debes escribir al menos {min} caracteres.", 'utf8'),
-                self.max_word_count,
+            result = ungettext("Debes escribir al menos {min} caracteres.",
+                "Debes escribir al menos {min} caracteres.",
+                self.max_word_count
             ).format(
                 min=self.min_word_count,
                 max=self.max_word_count,
@@ -439,6 +438,7 @@ class FreeTextResponse(
         """
         Returns a boolean value indicating whether the current
         word count of the user's answer is valid
+        Jromero: Overwritten to use character count
         """
         word_count = len(self.student_answer.strip())
         result = (
@@ -666,7 +666,7 @@ class FreeTextResponse(
             'used_attempts_feedback': self._get_used_attempts_feedback(),
             'nodisplay_class': self._get_nodisplay_class(),
             'submitted_message': '',
-            'user_alert': self.saved_message,
+            'user_alert': str(self.saved_message),
             'visibility_class': self._get_indicator_visibility_class(),
         }
         return result

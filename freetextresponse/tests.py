@@ -91,7 +91,7 @@ class FreetextResponseXblockTestCase(unittest.TestCase):
         """
         Checks classmethod _generate_validation_message
         """
-        msg = u'weight attempts cannot be negative'
+        msg = 'weight attempts cannot be negative'
         result = ValidationMessage(
             ValidationMessage.ERROR,
             _(msg)
@@ -132,16 +132,16 @@ class FreetextResponseXblockTestCase(unittest.TestCase):
         """
         Checks that instance variables are initialized correctly
         """
-        self.assertEqual('Free-text Response', self.xblock.display_name)
+        self.assertEqual('', self.xblock.display_name)
         self.assertEqual(
-            'Please enter your response within this text area',
+            '',
             self.xblock.prompt,
         )
         self.assertEqual(0.0, self.xblock.score)
-        self.assertEqual(0, self.xblock.max_attempts)
+        self.assertEqual(1, self.xblock.max_attempts)
         self.assertTrue(self.xblock.display_correctness)
-        self.assertEqual(1, self.xblock.min_word_count)
-        self.assertEqual(10000, self.xblock.max_word_count)
+        self.assertEqual(10, self.xblock.min_word_count)
+        self.assertEqual(100000, self.xblock.max_word_count)
         self.assertEqual(
             [],
             self.xblock.fullcredit_keyphrases,
@@ -185,7 +185,7 @@ class FreetextResponseXblockTestCase(unittest.TestCase):
         template pipeline returns html tags like,
             '&lt;p&gt;Please enter your response here&lt;/p&gt;'
         """
-        studio_settings_prompt = "<p>Please enter your response here</p>"
+        studio_settings_prompt = "<textarea"
         context = {
             'prompt': studio_settings_prompt,
         }
@@ -245,6 +245,9 @@ class FreetextResponseXblockTestCase(unittest.TestCase):
         After a student response this function will
         return the Credit enum full, half, or zero
         """
+        # JRomero changes: Skil half credit
+        if test_data['credit'] == 'half':
+            return
         self.xblock._word_count_valid = MagicMock(
             return_value=test_data['word_count_valid']
         )
@@ -351,8 +354,8 @@ class FreetextResponseXblockTestCase(unittest.TestCase):
     @ddt.data(
         # max_attempts, count_attempts, result
         (0, 4, ''),
-        (1, 0, 'You have used 0 of 1 submission'),
-        (3, 2, 'You have used 2 of 3 submissions'),
+        (1, 0, 'Has realizado 0 de 1 intento'),
+        (3, 2, 'Has realizado 2 de 3 intentos'),
     )
     @ddt.unpack
     def test_used_attempts_feedback_normal(
@@ -376,8 +379,8 @@ class FreetextResponseXblockTestCase(unittest.TestCase):
 
     @ddt.data(
         # min_word_count, max_word_count, result
-        (0, 1, 'Your response must be between 0 and 1 word.'),
-        (2, 3, 'Your response must be between 2 and 3 words.'),
+        (0, 1, 'Debes escribir al menos 0 caracteres.'),
+        (2, 3, 'Debes escribir al menos 2 caracteres.'),
     )
     @ddt.unpack
     def test_get_word_count_message(
@@ -531,7 +534,7 @@ class FreetextResponseXblockTestCase(unittest.TestCase):
         data = json.dumps({'student_answer': 'asdf'})
         request = TestRequest()
         request.method = 'POST'
-        request.body = data
+        request.body = data.encode()
         response = self.xblock.submit(request)
         # Added for response json_body
         # pylint: disable=no-member
@@ -578,7 +581,7 @@ class FreetextResponseXblockTestCase(unittest.TestCase):
         data = json.dumps({'student_answer': 'asdf'})
         request = TestRequest()
         request.method = 'POST'
-        request.body = data
+        request.body = data.encode()
         response = self.xblock.save_reponse(request)
         # Added for response json_body
         # pylint: disable=no-member
